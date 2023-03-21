@@ -5,20 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 
 	"github.com/AkitoMaeeda/go_todo_app/config"
-	"golang.org/x/sync/errgroup"
 )
 
 func run(ctx context.Context) error {
 
-	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
-	defer stop()
+	/*ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()*/
 
 	cfg, err := config.New()
 	if err != nil {
@@ -33,8 +27,11 @@ func run(ctx context.Context) error {
 	}
 	url := fmt.Sprintf("http://%s", l.Addr().String())
 	log.Printf("start with: %v", url)
+	mux := NewMux()
+	s := NewServer(l, mux)
+	return s.Run(ctx)
 
-	s := &http.Server{
+	/*s := &http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			time.Sleep(5 * time.Second)
 			fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
@@ -58,6 +55,6 @@ func run(ctx context.Context) error {
 		log.Printf("failed to shutdown: %+v", err)
 	}
 
-	return eg.Wait()
+	return eg.Wait()*/
 
 }
