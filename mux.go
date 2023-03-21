@@ -3,6 +3,11 @@ package main
 import "net/http"
 
 func NewMux() http.Handler {
-	mux := http.NewServerMux()
-	mux.HandlerFunc()
+	mux := http.NewServeMux()
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Context-Type", "application/json; charset = utf-8")
+
+		_, _ = w.Write([]byte(`{"status": "ok"}`))
+	})
+	return mux
 }
