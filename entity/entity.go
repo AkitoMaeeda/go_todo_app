@@ -10,8 +10,6 @@ import (
 type ErrResponse struct {
 	Message string   `json:"message"`
 	Details []string `json:"details,omitempty"`
-
-
 }
 
 func RespondJSON(ctx context.Context, w http.ResponseWriter, body any, status int) {
