@@ -25,8 +25,11 @@ func NewServer(l net.Listener, mux http.Handler) *Server {
 }
 
 func (s *Server) Run(ctx context.Context) error {
+
+	//シグナルを受け取って反映する
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
+
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
 		if err := s.srv.Serve(s.l); err != nil &&
@@ -37,6 +40,8 @@ func (s *Server) Run(ctx context.Context) error {
 		return nil
 	})
 
+	//ctx.Doneは、context.WithCancel()がcanselFuncを呼んだとき、
+	//もしくはcontext.WithDeadline()またはWithTimeout()が設定した時刻を超えたときに呼び出される
 	<-ctx.Done()
 	if err := s.srv.Shutdown(context.Background()); err != nil {
 		log.Printf("failed to shutdown: %+v", err)

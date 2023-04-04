@@ -25,9 +25,15 @@ func run(ctx context.Context) error {
 	if err != nil {
 		log.Fatalf("failed to kisten port %d: \n%v", cfg.Port, err)
 	}
+
+	//作成したlの要素を使ってurlを作成
 	url := fmt.Sprintf("http://%s", l.Addr().String())
 	log.Printf("start with: %v", url)
+
+	//登録したエンドポイントとレスポンスの取得
 	mux := NewMux()
+
+
 	s := NewServer(l, mux)
 	return s.Run(ctx)
 

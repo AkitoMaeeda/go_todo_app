@@ -27,6 +27,7 @@ func main() {
 	t.Logf("try request to %q", url)
 
 	rsp, err := http.Get(url)
+	
 	if err != nil {
 		log.Printf("failed to get: %+v ", err)
 	}
