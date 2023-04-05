@@ -7,7 +7,8 @@ import (
 )
 
 var (
-	Tasks = &TaskStore{Tasks: map[int]*entity.Task{}}
+	//タスクを格納する配列の作成
+	Tasks = &TaskStore{Tasks: map[entity.TaskID]*entity.Task{}}
 
 	ErrNotFound = errors.New("not found")
 )
@@ -21,7 +22,7 @@ func (ts *TaskStore) Add(t *entity.Task) (int, error) {
 	ts.LastID++
 	t.ID = ts.LastID
 	ts.Tasks[t.ID] = t
-	return t.ID, nil
+	return int(t.ID), nil
 }
 
 func (ts *TaskStore) All() entity.Tasks {

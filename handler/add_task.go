@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	
 	"time"
 
 	"github.com/AkitoMaeeda/go_todo_app/entity"
@@ -12,7 +11,7 @@ import (
 )
 
 type AddTask struct {
-	Store     *store.
+	Store     *store.TaskStore
 	Validator *validator.Validate
 }
 
@@ -47,7 +46,7 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//登録したタスクを保存
-	id, err := store.Task.Add(t)
+	id, err := store.Tasks.Add(t)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),

@@ -21,7 +21,7 @@ type Task struct {
 type Tasks []*Task
 
 func main() {
-	
+
 	var id int = 1
 
 	_ = Task{ID: TaskID(id)}
