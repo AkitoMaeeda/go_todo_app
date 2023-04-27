@@ -3,15 +3,20 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/AkitoMaeeda/go_todo_app/entity"
 	"github.com/AkitoMaeeda/go_todo_app/store"
 	"github.com/go-playground/validator/v10"
+	"github.com/jmoiron/sqlx"
 )
 
 type AddTask struct {
-	Store     *store.TaskStore
+
+	//データベースを保存先として使用するため、TaskStoreにタスクを保存する必要がなくなった。
+	//Store     *store.TaskStore
+
+	DB        *sqlx.DB
+	Repo      *store.Repository
 	Validator *validator.Validate
 }
 
@@ -40,13 +45,12 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//タスクをTask構造体に登録
 	t := &entity.Task{
-		Title:   b.Title,
-		Status:  entity.TaskStatusTodo,
-		Created: time.Now(),
+		Title:  b.Title,
+		Status: entity.TaskStatusTodo,
 	}
 
 	//登録したタスクを保存
-	id, err := store.Tasks.Add(t)
+	err := at.Repo.Addtask(ctx, at.DB, t)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
@@ -56,6 +60,6 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	rsp := struct {
 		ID int `json:"id"`
-	}{ID: id}
+	}{ID: t.id}
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }

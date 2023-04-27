@@ -31,7 +31,11 @@ func run(ctx context.Context) error {
 	log.Printf("start with: %v", url)
 
 	//登録したエンドポイントとレスポンスの取得
-	mux := NewMux()
+	mux, cleanup, err := NewMux(ctf, cfg)
+	if err != nil {
+		return err
+	}
+	defer cleanup()
 
 	s := NewServer(l, mux)
 	return s.Run(ctx)
