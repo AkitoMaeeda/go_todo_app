@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/AkitoMaeeda/go_todo_app/clock"
 	"github.com/AkitoMaeeda/go_todo_app/config"
-	_ "github.com/jmoiron/sqlx"
-	"golang.org/x/mobile/exp/sprite/clock"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 )
 
 // この辺が何で必要なのか今のところ不明。

@@ -1,14 +1,12 @@
-
 package store
 
 import (
 	"context"
-	"database/sql"
-	"entity"
-	"github.com/jmoiron/sqlx"
+
+	"github.com/AkitoMaeeda/go_todo_app/entity"
 )
 
-//select文で全部のタスクを取得するで！！
+// select文で全部のタスクを取得するで！！
 func (r *Repository) ListTasks(ctx context.Context, db Queryer) (entity.Tasks, error) {
 	tasks := entity.Tasks{}
 	sql := `SELECT id, title, status, created, modified FROM task;`
@@ -22,7 +20,7 @@ func (r *Repository) ListTasks(ctx context.Context, db Queryer) (entity.Tasks, e
 	return tasks, nil
 }
 
-//タスクの追加
+// タスクの追加
 func (r *Repository) AddTask(ctx context.Context, db Execer, t *entity.Task) error {
 	t.Created = r.Clocker.Now()
 	t.Modified = r.Clocker.Now()
