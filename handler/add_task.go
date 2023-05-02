@@ -50,7 +50,7 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//登録したタスクを保存
-	err := at.Repo.Addtask(ctx, at.DB, t)
+	err := at.Repo.AddTask(ctx, at.DB, t)
 	if err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
@@ -59,7 +59,7 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rsp := struct {
-		ID int `json:"id"`
+		ID entity.TaskID `json:"id"`
 	}{ID: t.id}
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }
