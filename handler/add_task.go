@@ -35,8 +35,8 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//bのTitleが存在しているかどうか調査
-	err := at.Validator.Struct(b)
-	if err != nil {
+
+	if err := at.Validator.Struct(b); err != nil {
 		RespondJSON(ctx, w, &ErrResponse{
 			Message: err.Error(),
 		}, http.StatusInternalServerError)
@@ -60,6 +60,6 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	rsp := struct {
 		ID entity.TaskID `json:"id"`
-	}{ID: t.id}
+	}{ID: t.Id}
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }
