@@ -60,6 +60,6 @@ func (at *AddTask) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	rsp := struct {
 		ID entity.TaskID `json:"id"`
-	}{ID: t.Id}
+	}{ID: t.ID}
 	RespondJSON(ctx, w, rsp, http.StatusOK)
 }
